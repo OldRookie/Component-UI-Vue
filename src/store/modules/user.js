@@ -2,6 +2,8 @@ import { loginByUsername, logout, getUserInfo } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 
 const user = {
+  namespaced: true,
+  
   state: {
     user: '',
     status: '',

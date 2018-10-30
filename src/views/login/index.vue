@@ -1,7 +1,13 @@
 <template>
   <div class="login-container">
 
-    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
+    <el-form 
+      ref="loginForm" 
+      :model="loginForm" 
+      :rules="loginRules" 
+      class="login-form" 
+      auto-complete="on" 
+      label-position="left">
 
       <div class="title-container">
         <h3 class="title">{{ $t('login.title') }}</h3>
@@ -32,12 +38,18 @@
           name="password"
           auto-complete="on"
           @keyup.enter.native="handleLogin" />
-        <span class="show-pwd" @click="showPwd">
+        <span 
+          class="show-pwd" 
+          @click="showPwd">
           <svg-icon icon-class="eye" />
         </span>
       </el-form-item>
 
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">{{ $t('login.logIn') }}</el-button>
+      <el-button 
+        :loading="loading" 
+        type="primary" 
+        style="width:100%;margin-bottom:30px;" 
+        @click.native.prevent="handleLogin">{{ $t('login.logIn') }}</el-button>
 
       <div class="tips">
         <span>{{ $t('login.username') }} : admin</span>
@@ -48,10 +60,16 @@
         <span>{{ $t('login.password') }} : {{ $t('login.any') }}</span>
       </div>
 
-      <el-button class="thirdparty-button" type="primary" @click="showDialog=true">{{ $t('login.thirdparty') }}</el-button>
+      <el-button 
+        class="thirdparty-button" 
+        type="primary" 
+        @click="showDialog=true">{{ $t('login.thirdparty') }}</el-button>
     </el-form>
 
-    <el-dialog :title="$t('login.thirdparty')" :visible.sync="showDialog" append-to-body>
+    <el-dialog 
+      :title="$t('login.thirdparty')" 
+      :visible.sync="showDialog" 
+      append-to-body>
       {{ $t('login.thirdpartyTips') }}
       <br>
       <br>
@@ -66,7 +84,8 @@
 import { isvalidUsername } from '@/utils/validate'
 import LangSelect from '@/components/LangSelect'
 import SocialSign from './socialsignin'
-import * as authService from '@/service/authService'
+import singIn from '@/services/authService'
+import store from '@/store'
 
 export default {
   name: 'Login',
@@ -127,8 +146,10 @@ export default {
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
+          var _store=store
           this.loading = true
-           authService.singIn(this.loginForm).then(() => {
+          //  this.$store.dispatch('user/LoginByUsername',this.loginForm).then(() => {
+            singIn(this.loginForm).then(() => {
             this.loading = false
             this.$router.push({ path: this.redirect || '/' })
           }).catch(() => {
