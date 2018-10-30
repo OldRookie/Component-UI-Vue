@@ -1,33 +1,45 @@
 import { loginByUsername, logout, getUserInfo } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
+import store from '@/store'
 
-class AuthService {
-  loginByUsername(userInfo) {
+
+  function signIn(userInfo) {
     const username = userInfo.username.trim()
     return new Promise((resolve, reject) => {
-      loginByUsername(username, userInfo.password).then(response => {
-        const data = response.data
-        setToken(response.data.token)
-        resolve()
-      }).catch(error => {
-        reject(error)
-      })
+      loginByUsername(username, userInfo.password)
+        .then(response => {
+          const data = response.data
+          store.user.commit('SET_TOKEN', data.token)
+          setToken(response.data.token)
+          setUserInfo().then(response => {
+            resolve(response)
+          }).catch(error => {
+            reject(error)
+          })
+        }).catch(error => {
+          reject(error)
+        })
     })
   }
 
-  // 获取用户信息
-  GetUserInfo() {
+  // 设置用户信息
+  function setUserInfo() {
     return new Promise((resolve, reject) => {
-      getUserInfo(state.token).then(response => {
+      getUserInfo(store.state.token).then(response => {
         if (!response.data) { // 由于mockjs 不支持自定义状态码只能这样hack
           reject('error')
         }
         const data = response.data
 
         if (data.roles && data.roles.length > 0) { // 验证返回的roles是否是一个非空数组
+          store.user.commit('SET_ROLES', data.roles)
         } else {
           reject('getInfo: roles must be a non-null array !')
         }
+
+        store.user.commit('SET_NAME', data.name)
+        store.user.commit('SET_AVATAR', data.avatar)
+        store.user.commit('SET_INTRODUCTION', data.introduction)
         resolve(response)
       }).catch(error => {
         reject(error)
@@ -50,11 +62,11 @@ class AuthService {
   // },
 
   // 登出
-  logOut({ commit, state }) {
+  function singOut() {
     return new Promise((resolve, reject) => {
-      logout(state.token).then(() => {
-        commit('SET_TOKEN', '')
-        commit('SET_ROLES', [])
+      logout(store.user.token).then(() => {
+        store.user.commit('SET_TOKEN', '')
+        store.user.commit('SET_ROLES', [])
         removeToken()
         resolve()
       }).catch(error => {
@@ -64,21 +76,27 @@ class AuthService {
   }
 
   // 前端 登出
-  fedLogOut({ commit }) {
+  function fedLogOut({ commit }) {
     return new Promise(resolve => {
-      commit('SET_TOKEN', '')
+      store.user.commit('SET_TOKEN', '')
       removeToken()
       resolve()
     })
   }
 
   // 动态修改权限
-  changeRoles(role) {
+  function syncRoles() {
     return new Promise(resolve => {
-      setToken(role)
-      getUserInfo(role).then(response => {
+      getUserInfo(store.token).then(response => {
+        const data = response.data
+        store.user.commit('SET_ROLES', data.roles)
+        store.user.commit('SET_NAME', data.name)
+        store.user.commit('SET_AVATAR', data.avatar)
+        store.user.commit('SET_INTRODUCTION', data.introduction)
+        store.user.dispatch('GenerateRoutes', data) // 动态修改权限后 重绘侧边菜单
         resolve()
       })
     })
   }
-}
+
+export { signIn,singOut,syncRoles}
