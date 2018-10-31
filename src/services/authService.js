@@ -4,12 +4,13 @@ import { getToken, setToken, removeToken } from '@/utils/auth'
 
 export default function signIn(userInfo) {
   const username = userInfo.username.trim()
+  //store.commit('user/SET_TOKEN', 'check')
   return new Promise((resolve, reject) => {
     loginByUsername(username, userInfo.password)
       .then(response => {
         const data = response.data
-        let _store = store
-        _store.commit('user/SET_TOKEN', data.token)
+        store.commit('user/SET_TOKEN', data.token)
+        // let _store = store
         setToken(response.data.token)
         setUserInfo().then(response => {
           resolve(response)
@@ -24,14 +25,14 @@ export default function signIn(userInfo) {
 
 // 设置用户信息
 function setUserInfo() {
+  //store.commit('user/SET_ROLES','test')
   return new Promise((resolve, reject) => {
-    let _store = store
-    getUserInfo(_store.state.token).then(response => {
+    // let _store = store
+    getUserInfo(store.state.user.token).then(response => {
       if (!response.data) { // 由于mockjs 不支持自定义状态码只能这样hack
         reject('error')
       }
       const data = response.data
-
       if (data.roles && data.roles.length > 0) { // 验证返回的roles是否是一个非空数组
         store.commit('user/SET_ROLES', data.roles)
       } else {
