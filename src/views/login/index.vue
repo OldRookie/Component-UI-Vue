@@ -84,7 +84,7 @@
 import { isvalidUsername } from '@/utils/validate'
 import LangSelect from '@/components/LangSelect'
 import SocialSign from './socialsignin'
-import singIn from '@/services/authService'
+import * as authService from '@/services/authService'
 import store from '@/store'
 
 export default {
@@ -149,7 +149,7 @@ export default {
           var _store=store
           this.loading = true
           //  this.$store.dispatch('user/LoginByUsername',this.loginForm).then(() => {
-            singIn(this.loginForm).then(() => {
+            authService.signIn(this.loginForm).then(() => {
             this.loading = false
             this.$router.push({ path: this.redirect || '/' })
           }).catch(() => {

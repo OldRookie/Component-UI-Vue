@@ -2,7 +2,7 @@ import { loginByUsername, logout, getUserInfo } from '@/api/login'
 import store from '@/store'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 
-export default function signIn(userInfo) {
+function signIn(userInfo) {
   const username = userInfo.username.trim()
   //store.commit('user/SET_TOKEN', 'check')
   return new Promise((resolve, reject) => {
@@ -101,4 +101,4 @@ function syncRoles() {
   })
 }
 
-// export { signIn , singOut, syncRoles }
+export { signIn , singOut, syncRoles }
