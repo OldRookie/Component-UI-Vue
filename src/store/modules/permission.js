@@ -42,7 +42,17 @@ const permission = {
   mutations: {
     SET_ROUTERS: (state, routers) => {
       state.addRouters = routers
-      state.routers = constantRouterMap.concat(routers)
+      let notExistRouters = routers.filter(function (item, pos) {
+        if (!state.routers) {
+          return true;
+        }
+        var index = state.routers.findIndex(oldItem => {
+          return item.path = oldItem.path;
+        });
+        return index == -1
+      });
+
+      state.routers = constantRouterMap.concat(notExistRouters)
     }
   },
   actions: {

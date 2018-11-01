@@ -42,7 +42,17 @@ function setUserInfo() {
       store.commit('user/SET_NAME', data.name)
       store.commit('user/SET_AVATAR', data.avatar)
       store.commit('user/SET_INTRODUCTION', data.introduction)
-      resolve(response)
+
+      const roles = data.roles // note: roles must be a array! such as: ['editor','develop']
+
+      resolve(response);
+      store.dispatch('GenerateRoutes', {
+        roles
+      }).then(() => {
+        resolve(response)
+      }).catch(error => {
+        reject(error)
+      })
     }).catch(error => {
       reject(error)
     })
