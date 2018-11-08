@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
-        "target": "es2015",
+        "target": "es6",
+        "module": "commonjs",
         "baseUrl": ".",
         "paths": {
             "@/*": [
@@ -9,6 +10,10 @@
         },
     },
     "include": [
-        "./src/**/*",
-    ],
+        "src/**/*.ts",
+        "src/**/*.tsx",
+        "src/**/*.vue",
+        "tests/**/*.ts",
+        "tests/**/*.tsx"
+    ]
 }
