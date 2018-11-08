@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import app from './modules/app'
-import errorLog from './modules/errorLog'
+import errorLog from './modules/error-log'
 import permission from './modules/permission'
-import tagsView from './modules/tagsView'
+import tagsView from './modules/tags-view'
 import user from './modules/user'
 import getters from './getters'
 
