@@ -155,7 +155,7 @@ export default {
             .signIn(this.loginForm)
             .then(() => {
               this.loading = false;
-              this.$router.push({ path: this.redirect || "/" });
+              this.$router.push({ path: this.redirect || "/documentation" });
             })
             .catch(() => {
               this.loading = false;
