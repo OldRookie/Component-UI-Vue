@@ -100,6 +100,26 @@
     min-width: 180px !important;
   }
 
+  .el-submenu [class^=el-icon-]{
+    width: auto;
+    margin-right: 10px;
+  }
+
+  .el-submenu .menu-title{
+    max-width: 85px;
+    display: inline-block;
+    white-space: normal;
+    line-height: 20px;
+  }
+
+  .el-menu-item, .el-submenu__title{
+    height: auto;
+  }
+
+  .el-submenu__title * {
+    vertical-align: text-top;
+}
+
   //适配移动端
   .mobile {
     .main-container {
