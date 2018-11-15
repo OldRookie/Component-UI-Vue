@@ -25,5 +25,8 @@ module.exports = {
       .set('@', resolve('src'));
 
     config.extensions = ['.js', '.vue', '.json']
+  },
+  configureWebpack: config => {
+    return {devtool: 'source-map'}
   }
 }
