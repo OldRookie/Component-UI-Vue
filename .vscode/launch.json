@@ -17,7 +17,7 @@
             "name": "Attach to Chrome",
             "port": 9222,
             "webRoot": "${workspaceRoot}/src",
-            "url": "http://localhost:9527/#/login?redirect=%2Fdashboard",　
+            "url": "http://localhost:8080/#/login?redirect=%2Fdocumentation%2Findex",　
             "sourceMaps": true,
             "sourceMapPathOverrides": {
               "webpack:///src/*": "${webRoot}/*"

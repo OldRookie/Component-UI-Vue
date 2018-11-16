@@ -58,42 +58,56 @@
         <el-form-item>
           <el-row :gutter="20">
             <el-col :span="6" :offset="10">
-              <el-button type="primary">查询</el-button>
+              <el-button icon="el-icon-search" type="primary">查询</el-button>
             </el-col>
           </el-row>
         </el-form-item>
       </el-form>
     </el-card>
 
-    <el-table v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%">
-      <template v-for="(columnItem,index) in columnInfos()">
-        <el-table-column align="center" :label="columnItem.label" :min-width="columnItem.minWidth" :width="columnItem.width?columnItem.width:false" :key="index">
+    <el-card class="box-card">
+      <el-row :gutter="20" class="toolbar">
+        <el-col :span="1">
+          <el-button icon="el-icon-plus" @click="add" type="primary">新增</el-button>
+        </el-col>
+      </el-row>
+
+      <el-table v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%">
+        <template v-for="(columnItem,index) in columnInfos()">
+          <el-table-column align="center" :label="columnItem.label" :min-width="columnItem.minWidth" :width="columnItem.width?columnItem.width:false" :key="index">
+            <template slot-scope="scope">
+              <template v-if="columnItem.propName=='status'">
+                <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status }}</el-tag>
+              </template>
+              <template v-else-if="columnItem.propName=='createDate'">
+                <span>{{ scope.row.createDate | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+              </template>
+              <template v-else>
+                <span>{{ scope.row[columnItem.propName] }}</span>
+              </template>
+            </template>
+          </el-table-column>
+        </template>
+
+        <el-table-column align="center" label="Actions" min-width="100">
           <template slot-scope="scope">
-            <template v-if="columnItem.propName=='status'">
-              <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status }}</el-tag>
-            </template>
-            <template v-else-if="columnItem.propName=='createDate'">
-              <span>{{ scope.row.createDate | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
-            </template>
-            <template v-else>
-              <span>{{ scope.row[columnItem.propName] }}</span>
-            </template>
+            <!-- <router-link :to="'/system/user/edit/'+scope.row.id">
+              <el-button type="primary" size="small" icon="el-icon-edit">Edit</el-button>
+            </router-link> -->
+            <el-button type="primary" @click="edit" size="small" icon="el-icon-edit">Edit</el-button>
           </template>
         </el-table-column>
-      </template>
-
-      <el-table-column align="center" label="Actions" min-width="100">
-        <template slot-scope="scope">
-          <router-link :to="'/system/user/edit/'+scope.row.id">
-            <el-button type="primary" size="small" icon="el-icon-edit">Edit</el-button>
-          </router-link>
-        </template>
-      </el-table-column>
-    </el-table>
+      </el-table>
+    </el-card>
 
     <div class="pagination-container">
       <el-pagination :current-page="listQuery.page" :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit" :total="total" background layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange" @current-change="handleCurrentChange" />
     </div>
+
+    <!-- dialog -->
+    <el-dialog :title="formdialogOption.isEdit?'Edit':'Create'" :visible.sync="formdialogOption.visible">
+      <user-form v-on:cancel="onCancel" :is-edit="formdialogOption.isEdit" :id="formdialogOption.id"></user-form>
+    </el-dialog>
   </div>
 </template>
 
@@ -101,9 +115,11 @@
 import { fetchList } from "@/api/user";
 import user from "@/store/modules/identity-info";
 import columnInfo from "@/store/entity/column-info";
+import userForm from "./components/user-form.vue";
 
 export default {
   name: "UserList",
+  components: { userForm },
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -147,6 +163,11 @@ export default {
 
         return columnArr;
       },
+      formdialogOption:{
+        isEdit:false,
+        id:"",
+        visible:false
+      },
       form: {
         name: "",
         status: "",
@@ -181,6 +202,17 @@ export default {
     },
     search(){
 
+    },
+    onCancel(data){
+      this.formdialogOption.visible=false;
+    },
+    edit(){
+      this.formdialogOption.isEdit=true;
+      this.formdialogOption.visible=true;
+    },
+    add(){
+      this.formdialogOption.isEdit=false;
+      this.formdialogOption.visible=true;
     }
   }
 };
@@ -201,6 +233,10 @@ export default {
 }
 
 .app-container >>> .box-card {
+  margin-bottom: 15px;
+}
+
+.app-container >>> .toolbar {
   margin-bottom: 15px;
 }
 </style>

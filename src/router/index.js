@@ -152,18 +152,25 @@ export const asyncRouterMap = [
       iconClass: 'el-icon-setting'
     },
     children: [
+      // {
+      //   path: 'user/create',
+      //   component: () => import('@/views/system-manage/user/create'),
+      //   name: 'createUser',
+      //   meta: { title: 'Create User', icon: 'edit' }
+      // },
+      // {
+      //   path: 'user/edit/:id(\\d+)',
+      //   component: () => import('@/views/system-manage/user/edit'),
+      //   name: 'editUser',
+      //   meta: { title: 'Edit User', noCache: true },
+      //   hidden: true
+      // },
       {
-        path: 'user/create',
-        component: () => import('@/views/system-manage/user/create'),
-        name: 'createUser',
-        meta: { title: 'Create User', icon: 'edit' }
-      },
-      {
-        path: 'user/edit/:id(\\d+)',
-        component: () => import('@/views/system-manage/user/edit'),
-        name: 'editUser',
-        meta: { title: 'Edit User', noCache: true },
-        hidden: true
+        path: 'create',
+        component: () => import('@/views/example/create'),
+        name: 'CreateArticle',
+        meta: { title: 'createArticle', icon: 'edit' },
+        // hidden: true
       },
       {
         path: 'user/list',
