@@ -6,4 +6,5 @@ export default class {
   email = "";
   acount = "";
   createDate = "";
+  status = "";
 }

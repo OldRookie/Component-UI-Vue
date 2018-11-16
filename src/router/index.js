@@ -143,33 +143,33 @@ export const asyncRouterMap = [
     ]
   },
   {
-    path: '/sysManage',
+    path: '/system',
     component: Layout,
-    redirect: '/sysManage/list',
-    name: 'SystemManage',
+    redirect: '/system/list',
+    name: 'system',
     meta: {
-      title: 'System Manage',
+      title: 'System',
       iconClass: 'el-icon-setting'
     },
     children: [
       {
-        path: 'create',
-        component: () => import('@/views/example/create'),
-        name: 'CreateArticle',
-        meta: { title: 'createArticle', icon: 'edit' }
+        path: 'user/create',
+        component: () => import('@/views/system-manage/user/create'),
+        name: 'createUser',
+        meta: { title: 'Create User', icon: 'edit' }
       },
       {
-        path: 'edit/:id(\\d+)',
-        component: () => import('@/views/example/edit'),
-        name: 'EditArticle',
-        meta: { title: 'editArticle', noCache: true },
+        path: 'user/edit/:id(\\d+)',
+        component: () => import('@/views/system-manage/user/edit'),
+        name: 'editUser',
+        meta: { title: 'Edit User', noCache: true },
         hidden: true
       },
       {
-        path: 'list',
-        component: () => import('@/views/example/list'),
-        name: 'ArticleList',
-        meta: { title: 'articleList', icon: 'list' }
+        path: 'user/list',
+        component: () => import('@/views/system-manage/user/list'),
+        name: 'userList',
+        meta: { title: 'User List', icon: 'list' }
       }
     ]
   },
