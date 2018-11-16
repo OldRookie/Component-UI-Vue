@@ -11,7 +11,8 @@ for (let i = 0; i < count; i++) {
       userName: "userName" + "@integer(300, 5000)",
       email: "email@email.com",
       acount: "acount" + "@integer(300, 5000)",
-      createDate: "@datetime"
+      createDate: "@datetime",
+      'status|1': ['published', 'draft', 'deleted']
     })
   );
 }
